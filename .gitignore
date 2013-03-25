@@ -1,3 +1,16 @@
+########################
+# sails
+########################
+.sails
+.waterline
+.rigging
+.tmp
+
+
+########################
+# node.js / npm
+########################
+node_modules
 lib-cov
 *.seed
 *.log
@@ -14,6 +27,22 @@ results
 npm-debug.log
 
 
+########################
+# misc / editors
+########################
+*~
+*#
+.DS_STORE
+.netbeans
+nbproject
+.idea
+*.esproj
+
+########################
+# local config
+########################
+config/local.js
+
 # OS generated files #
 ######################
 .DS_Store
@@ -25,12 +54,8 @@ Icon?
 ehthumbs.db
 Thumbs.db
 .htaccess
-# Editor Specific Files #
-#########################
-*.esproj
 
 # Build Asset Directories #
 ###############################
 _build-files
 logs
-node_modules
