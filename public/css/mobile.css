@@ -1,0 +1,21 @@
+#container {
+	width: 60%;
+	margin: 2.5% auto 0;
+	padding: 2.5%;
+}
+
+#phone {
+	margin: 0 auto;
+	width: 635px;
+	height: 1334px;
+	background: url(/images/mobile/phone.png) no-repeat top left;
+	position: relative;
+}
+
+#screen {
+	position: absolute;
+	top: 186px;
+	left: 46px;
+	background: red;
+	border-radius: 3px;
+}

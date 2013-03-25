@@ -1,10 +1,10 @@
 module.exports = {
 	
 	// Name of the application (used as default <title>)
-	appName: "Sails Application",
+	appName: "stressband",
 
 	// Port this Sails application will live on
-	port: 1337,
+	port: 5555,
 
 	// The environment the app is deployed in 
 	// (`development` or `production`)
