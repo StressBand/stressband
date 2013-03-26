@@ -57,25 +57,28 @@ SB.mobile = (function($,_,createjs,d3){
 	/*  updateStage - Change the blowfish's state
 		args:	state		- the state to transition to
 		----------------------------------------------- */
-	inflateBlowfish = function(state){
-		if(blowfish.state !== state){
-			if(state - blowfish.state < 0) { // deflate
-				blowfish.gotoAndPlay('s'+(blowfish.state-1)+'_transR');
-				blowfish.state-=1;
-			} else { // inflate
-				blowfish.gotoAndPlay('s'+blowfish.state+'_trans');
-				blowfish.state+=1;
+	inflateBlowfish = (function(){
+		var inprogress = false;
+		return function(state){
+			if(blowfish.state !== state && !inprogress){
+				inprogress = true;
+				if(state - blowfish.state < 0) { // deflate
+					blowfish.gotoAndPlay('s'+(blowfish.state-1)+'_transR');
+					blowfish.state-=1;
+				} else { // inflate
+					blowfish.gotoAndPlay('s'+blowfish.state+'_trans');
+					blowfish.state+=1;
+				}
+				
+				var idle = blowfish.addEventListener('animationend', function(event) {
+					blowfish.gotoAndPlay('s'+blowfish.state+"_idle");
+					blowfish.removeEventListener('animationend', idle);
+					inprogress = false;
+					inflateBlowfish(state);
+				});
 			}
-			
-			var idle = blowfish.addEventListener('animationend', function(event) {
-				blowfish.gotoAndPlay('s'+blowfish.state+"_idle");
-				blowfish.removeEventListener('animationend', idle);
-				inflateBlowfish(state);
-			});
-		}
-
-		
-	};
+		} // END - return function
+	})();
 	
 	/* PUBLIC init - Module Initialization
 		args:	container 	- the main html element of the view, ID ref
