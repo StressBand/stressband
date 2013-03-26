@@ -16,9 +16,17 @@ Main Desktop / Mobile Interface for the StressBand System
 
 
 
-startup guide:
+### startup guide:
 
 1. install sails globally
+
+	```
 	npm install sails -g
+	```
+
 2. from inside the project, start the server
+
+	```
 	sails lift
+	```
+
