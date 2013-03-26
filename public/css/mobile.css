@@ -16,6 +16,28 @@
 	position: absolute;
 	top: 186px;
 	left: 46px;
-	background: red;
+	background: rgba(100,150,170,1);
 	border-radius: 3px;
+}
+
+#controls {
+	position: fixed;
+	top: 20px;
+	left: 20px;
+	width: 160px;
+	z-index: 100;
+	
+}
+#controls li {
+	display: block;
+	height: 40px;
+	padding: 10px;
+	background-color: #AAA;
+	text-align: center;
+	font-size: 2em;
+	margin: 10px;
+}
+#controls li:hover {
+	background-color: #CCC;
+	cursor: pointer;
 }
