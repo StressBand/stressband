@@ -4,8 +4,6 @@
   "version": "0.0.0",
   "description": "a Sails application",
   "dependencies": {
-    "sails": "0.8.895",
-    "johnny-five": "~0.5.14"
   },
   "scripts": {
     "start": "node .app.js",
