@@ -18,9 +18,9 @@ SB.mobile = (function($,_,createjs,d3){
 			$container	:"",
 			$screen		:""	
 		},	
-		stage,fps = 30,blowfish,
+		stage,breaths = [],breathing,fps = 30,blowfish,
 		// function list
-		init,setupScreen,updateStage,inflateBlowfish;
+		init,setupScreen,updateStage,inflateBlowfish,logBreaths,graph;
 	
 	/*  setupScreen - Initialize the Elements of the Mini-Game
 		----------------------------------------------- */
@@ -35,9 +35,10 @@ SB.mobile = (function($,_,createjs,d3){
 			blowfish.gotoAndPlay('s1_idle');
 			blowfish.state = 1;
 			viewState = 1;
-			blowfish.x = Math.floor(jQMap.$screen.width()/2) - 200;
+			blowfish.x = Math.floor(jQMap.$screen.width()/2) - 184;
 			blowfish.y =0 ;
 			stage.addChild(blowfish);
+			
 			// start the game loop
 			createjs.Ticker.addEventListener('tick',updateStage)
 			// inflate the fish!
@@ -48,9 +49,7 @@ SB.mobile = (function($,_,createjs,d3){
 	/*  updateStage - Main Mobile Game Loop
 	----------------------------------------------- */
 	updateStage = function(){
-		// check for changes in sensor data
-		// pulse change? move fish
-		// breath change? deflate
+		// do some undulating animation on the Y axis here
 		stage.update();
 	};
 	
@@ -80,6 +79,29 @@ SB.mobile = (function($,_,createjs,d3){
 		} // END - return function
 	})();
 	
+	/*  logBreaths - Check sensor readings and record successful breaths
+		args:	reading		- data point's differential from stretch sensor
+		----------------------------------------------- */
+	logBreaths = function(reading){
+		var peak = .7, valley = -.4;
+		if(reading > peak) { breathing = true; console.log('breath'); }
+		if(reading < valley && breathing){
+			console.log('breath over');
+			breaths.push(new Date());
+			$('#breaths li').not('.lit').eq(0).addClass('lit');
+			breathing = false;
+			
+			if(breaths % 4 === 0 ){ // completed a round
+				if(blowfish.state !== 1){
+					inflateBlowfish(blowfish.state-1);
+					$('#breaths li').removeClass('.lit');
+				} else {
+					console.log('game over!');
+				}
+			}
+		}
+	}
+	
 	/* PUBLIC init - Module Initialization
 		args:	container 	- the main html element of the view, ID ref
 				canvas		- the canvas element for holding the mini-game, ID ref
@@ -87,6 +109,8 @@ SB.mobile = (function($,_,createjs,d3){
 	init = function(container, canvas){
 		jQMap.$container = $(container);
 		jQMap.$screen = $(canvas);
+		jQMap.$screen[0].width = $(window).width(); 
+		jQMap.$screen[0].height = $(window).height(); 
 		
 		$('#next').on('click',function(){
 			if(blowfish.state != 4){
@@ -100,8 +124,80 @@ SB.mobile = (function($,_,createjs,d3){
 		});
 		
 		setupScreen();
+		drawChart();
+		
+		// establish socket connection
+		var socket = io.connect("http://localhost:5555");
+		socket.on('sensor', function(sensor){
+			logBreaths(sensor.diff*10);
+			updateChart(sensor.diff*10);
+		});
 		
 	};
+	
+	//-------------------------------- CHARTING FUNCTIONS ( FOR DEBUG ONLY )
+	var chart,data,line,x;
+	function drawChart(){
+		// Set up the data object
+		data = {
+			min: -1,
+			max: 1,
+			readings: [],
+			freq: 0
+		};
+		
+		// Set up the Chart
+		var container = document.getElementById('chart'),
+			width = 250,
+			height = 90,
+			margin = [10,10,10,10];
+			
+		chart = d3.select(container).append('svg')
+			.attr("width",width)
+			.attr("height",height);
+		
+		
+		x = d3.scale.linear().domain([0,80]).range([80, width]);	
+		var y = d3.scale.linear()	
+			.domain([data.min,data.max])
+			.range([0+margin[2],height-margin[0]]);	
+		var yAxis = d3.svg.axis()
+			.scale(y).orient('right');
+		chart.append('g').attr('class', 'grid').call(yAxis.tickSize(width,-50,0).tickFormat(""));
+		
+		
+		line = d3.svg.line()
+			.x(function(d,i){ return x(i+80); })
+			.y(function(d){ return y(d); })
+			.interpolate("basis");
+			
+		chart.append("g").attr("id", "graph")
+			.append("path")
+			.attr("id","line")
+			.attr("d",line(data.readings))
+		
+		// Clipping Mask
+		chart.append("svg:clipPath")
+			.attr("id","clip")
+			.append("rect")
+			.attr("width",width-35)
+			.attr("height",height-margin[0]-margin[2]+5)
+			.attr("stroke","red")
+			.attr("fill","none")
+			.attr("transform","translate(35,"+(margin[0]-5)+")");
+		d3.select('#graph').attr("clip-path", "url(#clip)");
+	}
+	
+	function updateChart(point){
+		data.readings.push(point);
+		chart.select("#line")
+			.attr("d",line(data.readings))
+			.transition()
+			.ease('linear')
+			.duration(data.freq)
+			.attr("transform", "translate(" + -x(data.readings.length) + ")");
+	}
+	//-------------------------------- END CHARTING FUNCTIONS ( FOR DEBUG ONLY )
 	
 	return {
 		init:init
