@@ -1,11 +1,13 @@
 /* --------------------------------------------
 
-stressband
+File:		app.js
 
-a sensor-driven application for the monitoring and reflection on stressful events
-3 / 30 / 12
- 	
- 	
+Title:		StressBand Application
+Date:		3 / 30 / 2012
+Author:		Wesley Lauka
+ 
+Desc:		The main stressband application, sets up http server, routing, and socket.io	
+
 ----------------------------------------------- */
 
 var http = require('http'),
@@ -25,9 +27,9 @@ var app = http.createServer(
   .use(connect.query())
   .use(connectRoute(function(router){
   	router.get('/mobile',function(req,res,next){
+  	  	mobile.initSensors(req.query);
   		fs.readFile("views"+req.route+".html",function(err,data){
   			if(err) throw err;
-  			mobile.initSensors(req.query);
   			res.end(data);
   		});
   		
@@ -46,6 +48,5 @@ console.log("Running stressband on port 4000.");
 ----------------------------------------------- */
 
 sio.on('connection', function(socket) {
-	socket.emit('info', {'output': 'Connected. Listening for Sensor Data.. freq '+freq,'freq':freq});
-
+	socket.emit('info', {'output': 'Connected. Listening for Sensor Data.. '});
 });

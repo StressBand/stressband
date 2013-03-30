@@ -1,8 +1,14 @@
-/*---------------------
-	:: Mobile 
-	-> controller
----------------------*/
-var util = require('util');
+/* --------------------------------------------
+
+File:		MobileController.js
+
+Title:		StressBand Moble Controller
+Date:		3 / 30 / 2012
+Author:		Wesley Lauka
+ 
+Desc:		The server-side controller for sensor data to the mobile display
+
+----------------------------------------------- */
 var serialport = require('serialPort');
 
 var mavg = (function(){
@@ -57,12 +63,13 @@ var initMonitoring = function(){
 		  });
 		
 		serial.on('open',function(){
-			util.debug('Serial Port Connected.');
+			console.log('Connected to serial port '+ppath+'.');
 			serial.on('data',function(data){
 				var val = parseInt(data)
 				var avg = mavg(val);
 				var d = diff(avg);
 				console.log({output:val,average:avg,diff:d});
+				sio.sockets.emit('sensor',{output:val,average:avg,diff:d});
 			});
 			
 		}); 

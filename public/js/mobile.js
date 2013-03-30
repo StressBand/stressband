@@ -90,11 +90,10 @@ SB.mobile = (function($,_,createjs,d3){
 			breaths.push(new Date());
 			$('#breaths li').not('.lit').eq(0).addClass('lit');
 			breathing = false;
-			
-			if(breaths % 4 === 0 ){ // completed a round
+			if(breaths.length % 4 === 0 ){ // completed a round
 				if(blowfish.state !== 1){
 					inflateBlowfish(blowfish.state-1);
-					$('#breaths li').removeClass('.lit');
+					$('#breaths li').removeClass('lit');
 				} else {
 					console.log('game over!');
 				}
@@ -127,7 +126,7 @@ SB.mobile = (function($,_,createjs,d3){
 		drawChart();
 		
 		// establish socket connection
-		var socket = io.connect("http://localhost:5555");
+		var socket = io.connect("http://localhost:4000");
 		socket.on('sensor', function(sensor){
 			logBreaths(sensor.diff*10);
 			updateChart(sensor.diff*10);
@@ -157,7 +156,7 @@ SB.mobile = (function($,_,createjs,d3){
 			.attr("height",height);
 		
 		
-		x = d3.scale.linear().domain([0,80]).range([80, width]);	
+		x = d3.scale.linear().domain([0,80]).range([0, width]);	
 		var y = d3.scale.linear()	
 			.domain([data.min,data.max])
 			.range([0+margin[2],height-margin[0]]);	
@@ -180,11 +179,11 @@ SB.mobile = (function($,_,createjs,d3){
 		chart.append("svg:clipPath")
 			.attr("id","clip")
 			.append("rect")
-			.attr("width",width-35)
-			.attr("height",height-margin[0]-margin[2]+5)
+			.attr("width",width)
+			.attr("height",height)
 			.attr("stroke","red")
 			.attr("fill","none")
-			.attr("transform","translate(35,"+(margin[0]-5)+")");
+			.attr("transform","translate(0,"+(margin[0])+")");
 		d3.select('#graph').attr("clip-path", "url(#clip)");
 	}
 	
