@@ -4,6 +4,10 @@
   "version": "0.0.0",
   "description": "a Sails application",
   "dependencies": {
+    "connect": "~2.7.3",
+    "socket.io": "~0.9.14",
+    "connect-route": "~0.1.3",
+    "serialport": "~1.1.0"
   },
   "scripts": {
     "start": "node .app.js",

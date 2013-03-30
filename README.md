@@ -1,7 +1,7 @@
 stressband
 ==========
 
-Main Desktop / Mobile Interface for the StressBand System
+A sensor-driven application for the monitoring and reflection on stressful events.
 
 ### TODO Breakdown from 3/22:
 - Consolidated Sensor Apparatus
@@ -18,15 +18,14 @@ Main Desktop / Mobile Interface for the StressBand System
 
 ### startup guide:
 
-1. install sails globally
+1. install dependencies
 
 	```
-	npm install sails -g
+	npm install
 	```
 
 2. from inside the project, start the server
 
 	```
-	sails lift
+	node app.js
 	```
-
