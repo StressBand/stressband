@@ -28,15 +28,35 @@ var mavg = (function(){
 	
 })();
 
+var mavg2 = (function(){
+	var buffer = [];
+	var blen = 5;
+	return function(val){
+		if(buffer.length === blen) buffer.shift();
+		buffer.push(val);
+		var sum = 0;
+		if(buffer.length === blen){
+			for(var x = 0; x < blen; x++){
+				sum += buffer[x];
+			}
+		}
+		return sum / buffer.length;
+	}; 
+	
+})();
+
 // lets try this! a simple numeric differentiator ( central operator )
-// http://stackoverflow.com/questions/627055/compute-a-derivative-using-discrete-methods
+// http://math.fullerton.edu/mathews/n2003/NumericalDiffMod.html
 var diff = (function(){
 	var buffer = [];
 	return function(val){
-		if(buffer.length === 3) buffer.shift(); 
+		if(buffer.length === 5) buffer.shift(); 
 		buffer.push(val)
-		if (buffer.length === 3){
-			var d = (buffer[0] - buffer[2]) / 2
+		if (buffer.length === 5){
+			// first derivative
+			d = (buffer[4] - buffer[0]) / 4
+			// second derivative
+			//d = buffer[0] - (2*buffer[2]) + buffer[4]
 		} else {
 			var d = 0;
 		}
@@ -55,21 +75,23 @@ var initMonitoring = function(){
 		});
 		connect();
 	});
+
 	
 	connect = function(){
 		serial = new serialport.SerialPort(ppath, {
 		    baudrate: 9600,
 		    parser: serialport.parsers.readline("\n") 
 		  });
-		
 		serial.on('open',function(){
 			console.log('Connected to serial port '+ppath+'.');
 			serial.on('data',function(data){
-				var val = parseInt(data)
+				var val = parseInt(data);
 				var avg = mavg(val);
-				var d = diff(avg);
+				if(avg){
+					var d = (1 - val / avg) * 100;
+					sio.sockets.emit('sensor',{output:val,average:avg,diff:d});
+				}
 				console.log({output:val,average:avg,diff:d});
-				sio.sockets.emit('sensor',{output:val,average:avg,diff:d});
 			});
 			
 		}); 

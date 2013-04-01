@@ -83,7 +83,7 @@ SB.mobile = (function($,_,createjs,d3){
 		args:	reading		- data point's differential from stretch sensor
 		----------------------------------------------- */
 	logBreaths = function(reading){
-		var peak = .7, valley = -.4;
+		var peak = .85, valley = .1;
 		if(reading > peak) { breathing = true; console.log('breath'); }
 		if(reading < valley && breathing){
 			console.log('breath over');
@@ -93,7 +93,7 @@ SB.mobile = (function($,_,createjs,d3){
 			if(breaths.length % 4 === 0 ){ // completed a round
 				if(blowfish.state !== 1){
 					inflateBlowfish(blowfish.state-1);
-					$('#breaths li').removeClass('lit');
+					$('#breaths li')removeClass('lit');
 				} else {
 					console.log('game over!');
 				}
@@ -128,8 +128,8 @@ SB.mobile = (function($,_,createjs,d3){
 		// establish socket connection
 		var socket = io.connect("http://localhost:4000");
 		socket.on('sensor', function(sensor){
-			logBreaths(sensor.diff*10);
-			updateChart(sensor.diff*10);
+			logBreaths(sensor.diff);
+			updateChart(sensor.diff);
 		});
 		
 	};
@@ -139,8 +139,8 @@ SB.mobile = (function($,_,createjs,d3){
 	function drawChart(){
 		// Set up the data object
 		data = {
-			min: -1,
-			max: 1,
+			min: 0,
+			max: 1.2,
 			readings: [],
 			freq: 0
 		};
@@ -158,7 +158,7 @@ SB.mobile = (function($,_,createjs,d3){
 		
 		x = d3.scale.linear().domain([0,80]).range([0, width]);	
 		var y = d3.scale.linear()	
-			.domain([data.min,data.max])
+			.domain([data.max,data.min])
 			.range([0+margin[2],height-margin[0]]);	
 		var yAxis = d3.svg.axis()
 			.scale(y).orient('right');
