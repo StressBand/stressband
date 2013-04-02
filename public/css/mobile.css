@@ -5,22 +5,32 @@ html,body {
 
 #prompt {
 	position: absolute;
-	background-color: rgba(0,0,0,.85);
+	background-color: rgba(0,10,10,.85);
 	width: 100%;
 	height: 100%;
 	z-index: 100;
 }
+#cards {
+	position: relative;
+	overflow: hidden;
+	height: 600px;
+	width: 400%; /* this is arbitrary right now */
+	text-align: center;
+}
 .card {
-	background-color: white;
+	background: white 	url(../images/mobile/heartLine.svg) no-repeat 0 30px;
 	width: 350px;
-	margin: 25% auto;
+	float: left;
+	margin: 8rem 25px 0;
 	padding: 3.5em 3.5em;
 	border-radius: 8px;
-	position: relative;
 }
 .card p {
 	margin-top: 2rem;
 	font-size: 2.2rem;
+}
+.card p.details {
+	font-size: 1.6rem;
 }
 .card p span {
 	color: #54b9dd;
@@ -34,6 +44,7 @@ html,body {
 	position: static;
 	margin: 0;
 	color: #54b9dd;
+	opacity: 0;
 }
 .opts li{
 	
@@ -50,7 +61,7 @@ html,body {
 	box-shadow: 
 		inset 0 1px 0 #54b9dd,
 		inset 0 2px 0 rgba(255,255,255,.25), 
-		inset 0 25px 0 rgba(255,255,255,.1),
+		inset 0 5px 0 rgba(255,255,255,.1),
 		inset 0 -1px 0 rgba(0,0,0,.2),
 		0px 1px 5px rgba(0,0,0,.1);
 }
@@ -58,11 +69,11 @@ html,body {
 	cursor: pointer;
 }
 .btn.neg {
-	background-color: #dd7239;
+		background-color: #e17d74;
 	box-shadow: 
-		inset 0 1px 0 #dd7239,
+		inset 0 1px 0 #e17d74,
 		inset 0 2px 0 rgba(255,255,255,.25), 
-		inset 0 25px 0 rgba(255,255,255,.1),
+		inset 0 5px 0 rgba(255,255,255,.1),
 		inset 0 -1px 0 rgba(0,0,0,.2),
 		0px 1px 5px rgba(0,0,0,.1);
 }

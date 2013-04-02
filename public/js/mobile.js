@@ -108,21 +108,25 @@ SB.mobile = (function($,_,createjs,d3){
 	init = function(container, canvas){
 		jQMap.$container = $(container);
 		jQMap.$screen = $(canvas);
-		console.log($(window).width());
 		jQMap.$screen[0].width = $(window).width(); 
 		jQMap.$screen[0].height = $(window).height(); 
 		
 		setupScreen();
 		
-		// play the game?
-		$('#play').on('click',function(e){
-			$('#prompt .card').animate({'top':'+600px'},350,function(){ $(this).parent().fadeOut(1000)});
-			// establish socket connection
-			var socket = io.connect("http://localhost:4000");
-			socket.on('sensor', function(sensor){
-				logBreaths(sensor.diff);
-				updateChart(sensor.diff);
-			});
+		// moving through the prompts
+		$('#prompt .card .next').on('click',function(e){
+			if($(this).closest('.card').is(':last-child')){ // last prompt. start the game
+				$('#prompt').fadeOut(1000);
+				// establish socket connection
+				var socket = io.connect("http://localhost:4000");
+				socket.on('sensor', function(sensor){
+					logBreaths(sensor.diff);
+					updateChart(sensor.diff);
+				});
+			} else { // cycle to next prompt
+				$('#cards').animate({'left':'-='+$(window).width()+'px'});
+			}
+
 		});
 		$('#cancel').on('click',function(e){ window.close() });
 	

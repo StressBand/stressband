@@ -88,13 +88,11 @@ body {
 	text-align: center;
 }
 #logo {
-	margin-top: 10%;
+	margin-bottom: 3rem;
 }
 #logo + ul li{
-	margin: 0 auto;
-	width: 500px;
-	border-bottom: 1px solid #ccc;
-	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ececec;
+	border-top: 1px solid #ececec;
 	
 }
 #logo + ul li:last-child{
@@ -107,9 +105,15 @@ body {
 	padding: 20px 0;
 }
 #logo + ul li a:hover {
-	background-color: white;
 	color: #bb427c;
 	cursor: pointer;
+}
+#wrap {
+	background: white;
+	width: 800px;
+	margin: 5% auto;
+	padding: 50px;
+	border-radius: 4px;
 }
 
 /* @group  ICONS

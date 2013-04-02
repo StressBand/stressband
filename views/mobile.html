@@ -28,14 +28,23 @@
 	<body>
 		<div id="container">
 			<div id="prompt">
-				<div class="card">
-					<span class="icon-lightbulb"></span>
-					<p> It looks like you could use a <span>relaxation</span> exercise.</p>
-					<ul class="opts">
-						<li id="play" class="btn">Let's Do It!</li>
-						<li id="cancel" class="btn neg">Not Now.</li>
-					</ul>
-				</div>
+				<ul id="cards">
+					<li class="card">
+						<span class="icon-lightbulb"></span>
+						<p> It looks like you could use a <span>relaxation</span> exercise.</p>
+						<ul class="opts">
+							<li class="btn next">Let's Do It!</li>
+							<li id="cancel" class="btn neg">Not Now.</li>
+						</ul>
+					</li>
+					<li class="card">
+						<span class="icon-lightbulb"></span>
+						<p> <span>Breath Deep</span> and Help the Pufferfish Clam Down. </p><p class="details">every four good breaths will deflate the pufferfish closer to normal </p>
+						<ul class="opts">
+							<li class="btn next">I'm Ready!</li>
+						</ul>
+					</li>
+				</ul>
 			</div>
 			<div id="chart"></div>
 			<ul id="controls">
