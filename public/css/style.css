@@ -83,3 +83,31 @@ h1 {
 body {
 	background: #ECECEC;
 }
+#container {
+	width: 100%;
+	text-align: center;
+}
+#logo {
+	margin-top: 10%;
+}
+#logo + ul li{
+	margin: 0 auto;
+	width: 500px;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	
+}
+#logo + ul li:last-child{
+	border-top: 0;
+}
+#logo + ul li a{
+	display: block;
+	text-decoration: none;
+	margin-bottom: 0;
+	padding: 20px 0;
+}
+#logo + ul li a:hover {
+	background-color: white;
+	color: #bb427c;
+	cursor: pointer;
+}

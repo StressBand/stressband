@@ -13,7 +13,7 @@
     "start": "node .app.js",
     "debug": "node debug .app.js"
   },
-  "main": ".app.js",
+  "main": "app.js",
   "repository": "",
   "author": "",
   "license": "MIT"

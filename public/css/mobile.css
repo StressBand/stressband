@@ -21,6 +21,7 @@ html,body {
 }
 
 #controls {
+	display: none;
 	position: fixed;
 	top: 5px;
 	left: 20px;

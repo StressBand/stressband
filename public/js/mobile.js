@@ -93,7 +93,7 @@ SB.mobile = (function($,_,createjs,d3){
 			if(breaths.length % 4 === 0 ){ // completed a round
 				if(blowfish.state !== 1){
 					inflateBlowfish(blowfish.state-1);
-					$('#breaths li')removeClass('lit');
+					$('#breaths li').removeClass('lit');
 				} else {
 					console.log('game over!');
 				}
@@ -123,7 +123,12 @@ SB.mobile = (function($,_,createjs,d3){
 		});
 		
 		setupScreen();
-		drawChart();
+		// are we in debug mode?
+		if(window.location.search.indexOf('debug') !== -1){
+			drawChart();
+			$('#controls').css('display','block');
+		}
+		
 		
 		// establish socket connection
 		var socket = io.connect("http://localhost:4000");
