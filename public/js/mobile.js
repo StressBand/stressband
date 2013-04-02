@@ -108,35 +108,43 @@ SB.mobile = (function($,_,createjs,d3){
 	init = function(container, canvas){
 		jQMap.$container = $(container);
 		jQMap.$screen = $(canvas);
+		console.log($(window).width());
 		jQMap.$screen[0].width = $(window).width(); 
 		jQMap.$screen[0].height = $(window).height(); 
 		
-		$('#next').on('click',function(){
-			if(blowfish.state != 4){
-				inflateBlowfish(blowfish.state+1)
-			}
-		});
-		$('#prev').on('click',function(){
-			if(blowfish.state != 1){
-				inflateBlowfish(blowfish.state-1)
-			}
-		});
-		
 		setupScreen();
+		
+		// play the game?
+		$('#play').on('click',function(e){
+			$('#prompt .card').animate({'top':'+600px'},350,function(){ $(this).parent().fadeOut(1000)});
+			// establish socket connection
+			var socket = io.connect("http://localhost:4000");
+			socket.on('sensor', function(sensor){
+				logBreaths(sensor.diff);
+				updateChart(sensor.diff);
+			});
+		});
+		$('#cancel').on('click',function(e){ window.close() });
+	
+	
+	
 		// are we in debug mode?
 		if(window.location.search.indexOf('debug') !== -1){
 			drawChart();
 			$('#controls').css('display','block');
-		}
-		
-		
-		// establish socket connection
-		var socket = io.connect("http://localhost:4000");
-		socket.on('sensor', function(sensor){
-			logBreaths(sensor.diff);
-			updateChart(sensor.diff);
-		});
-		
+			
+			$('#next').on('click',function(){
+				if(blowfish.state != 4){
+					inflateBlowfish(blowfish.state+1)
+				}
+			});
+			$('#prev').on('click',function(){
+				if(blowfish.state != 1){
+					inflateBlowfish(blowfish.state-1)
+				}
+			});
+			
+		}		
 	};
 	
 	//-------------------------------- CHARTING FUNCTIONS ( FOR DEBUG ONLY )

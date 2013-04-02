@@ -27,6 +27,16 @@
 
 	<body>
 		<div id="container">
+			<div id="prompt">
+				<div class="card">
+					<span class="icon-lightbulb"></span>
+					<p> It looks like you could use a <span>relaxation</span> exercise.</p>
+					<ul class="opts">
+						<li id="play" class="btn">Let's Do It!</li>
+						<li id="cancel" class="btn neg">Not Now.</li>
+					</ul>
+				</div>
+			</div>
 			<div id="chart"></div>
 			<ul id="controls">
 				<li id="next" class="sans-serif disabled"> Inflate </li>
@@ -40,7 +50,7 @@
 					<li></li>
 				</ul>
 			</section>
-				<section class="below">
+			<section class="below">
 				<div class="filter"></div>
 				<canvas id="screen" width="500px" height="500px"></canvas>
 			</section>
