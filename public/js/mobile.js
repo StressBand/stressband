@@ -116,7 +116,9 @@ SB.mobile = (function($,_,createjs,d3){
 		// moving through the prompts
 		$('#prompt .card .next').on('click',function(e){
 			if($(this).closest('.card').is(':last-child')){ // last prompt. start the game
-				$('#prompt').fadeOut(1000);
+				$('#cards').animate({'left':'-='+$(window).width()+'px'},function(){
+					$('#prompt').fadeOut(1000);
+				});
 				// establish socket connection
 				var socket = io.connect("http://localhost:4000");
 				socket.on('sensor', function(sensor){
