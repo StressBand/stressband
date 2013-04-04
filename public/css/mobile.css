@@ -5,6 +5,8 @@ html,body {
 	-webkit-backface-visibility: hidden;
 }
 
+
+
 #prompt {
 	position: absolute;
 	background-color:#283038;
@@ -30,7 +32,8 @@ html,body {
 	background: white 	url(../images/mobile/heartLine.svg) no-repeat 0 30px;
 }
 .card.dir {
-	background: white 	url(../images/mobile/belly04.svg) no-repeat 0 15px;
+	background: white;
+	//background: white 	url(../images/mobile/breathdeep.svg) no-repeat 0 15px;
 }
 .card p {
 	margin-top: 2rem;
@@ -116,40 +119,6 @@ html,body {
 	z-index: 100;
 	
 }
-#controls li {
-	display: block;
-	height: 26px;
-	padding: 6px;
-	background-color: #AAA;
-	text-align: center;
-	font-size: 1.2em;
-	font-weight: bold;
-	text-transform: uppercase;
-	line-height: 1;
-	margin: 10px;
-	text-align: center;
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.03, rgb(240,240,240)),
-		color-stop(0.95, rgb(255,255,255))
-	);
-	background-image: linear-gradient(bottom, rgb(240,240,240) 3%, rgb(255,255,255) 95%);
-	background-image: -o-linear-gradient(bottom, rgb(240,240,240) 3%, rgb(255,255,255) 95%);
-	background-image: -moz-linear-gradient(bottom, rgb(240,240,240) 3%, rgb(255,255,255) 95%);
-	background-image: -webkit-linear-gradient(bottom, rgb(240,240,240) 3%, rgb(255,255,255) 95%);
-	background-image: -ms-linear-gradient(bottom, rgb(240,240,240) 3%, rgb(255,255,255) 95%);
-	border-radius: 3px;
-	border: 1px solid #999;
-	text-shadow: 0 1px 0 white;
-	transition:all 1s ease;
-}
-#controls li:hover {
-	cursor: pointer;
-	border: 1px solid rgb(90,115,70);
-}
-
 /*****************  IN THE MINI-GAME ********/
 
 .bubbles {

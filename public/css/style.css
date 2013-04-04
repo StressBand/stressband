@@ -99,11 +99,12 @@ body {
 	border-top: 0;
 }
 #logo + ul li a{
-	display: block;
+	display: inline-block;
 	text-decoration: none;
 	margin-bottom: 0;
 	padding: 20px 0;
 }
+
 #logo + ul li a:hover {
 	color: #bb427c;
 	cursor: pointer;
