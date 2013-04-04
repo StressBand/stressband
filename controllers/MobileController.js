@@ -28,43 +28,6 @@ var mavg = (function(){
 	
 })();
 
-var mavg2 = (function(){
-	var buffer = [];
-	var blen = 5;
-	return function(val){
-		if(buffer.length === blen) buffer.shift();
-		buffer.push(val);
-		var sum = 0;
-		if(buffer.length === blen){
-			for(var x = 0; x < blen; x++){
-				sum += buffer[x];
-			}
-		}
-		return sum / buffer.length;
-	}; 
-	
-})();
-
-// lets try this! a simple numeric differentiator ( central operator )
-// http://math.fullerton.edu/mathews/n2003/NumericalDiffMod.html
-var diff = (function(){
-	var buffer = [];
-	return function(val){
-		if(buffer.length === 5) buffer.shift(); 
-		buffer.push(val)
-		if (buffer.length === 5){
-			// first derivative
-			d = (buffer[4] - buffer[0]) / 4
-			// second derivative
-			//d = buffer[0] - (2*buffer[2]) + buffer[4]
-		} else {
-			var d = 0;
-		}
-		return d;
-	}; 
-	
-})();
-
 var initMonitoring = function(){
 	var 
 		ppath,serial, connect;

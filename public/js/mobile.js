@@ -30,13 +30,13 @@ SB.mobile = (function($,_,createjs,d3){
 		createjs.Ticker.setFPS(fps);
 		
 		// start spritsheet data
-		$.getJSON('images/mobile/blowfishAnim.json',function(data){
+		$.getJSON('images/mobile/blowfishAnim_003.json',function(data){
 			blowfish = new createjs.BitmapAnimation(new createjs.SpriteSheet(data));
 			blowfish.gotoAndPlay('s1_idle');
 			blowfish.state = 1;
 			viewState = 1;
 			blowfish.x = Math.floor(jQMap.$screen.width()/2) - 184;
-			blowfish.y =0 ;
+			blowfish.y = 10;
 			stage.addChild(blowfish);
 			
 			// start the game loop
