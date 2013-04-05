@@ -1,6 +1,6 @@
 html,body {
 	height: 100%;
-	overflow: auto;
+	overflow: hidden;
 	background-color: #283038;
 	-webkit-backface-visibility: hidden;
 }
