@@ -6,14 +6,21 @@
 		<!-- Viewport mobile tag for sensible mobile support -->
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link rel="stylesheet" href="css/style.css" type="text/css" />
-	
+		<script type="text/javascript" src="js/lib/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript">
 		// open mobile in a new window
 		function openMobile(e){
 			var settings = "height=680,width=400,location=0,scrollbars=no,status=no,titlebar=no,toolbar=no,left=200";
-			window.open("/mobile","_blank",settings);
+			var qstring = "?" + $('.options a.active').map(function(){ return $(this).text()}).toArray().join('&');
+			window.open("/mobile"+qstring,"_blank",settings);
 			return false;
 		}
+		$(function(){
+			$('.options li a').on('click',function(e){
+				$(this).toggleClass('active');
+				return false;
+			});
+		});
 	</script>
 		
 	</head>
@@ -23,7 +30,10 @@
 		<div id="wrap">
 		<img id="logo" src="images/logo.png" width="700" height="124"/>
 		<ul >
-		<li><a class="sans-serif" href="#" onclick="openMobile()">Mobile Display</a></li>
+		<li>
+			<a class="sans-serif" href="#" onclick="openMobile()">Mobile Display</a>
+			<ul class="options"><li><a>sensor</a></li><li><a>debug</a></li></ul>
+		</li>
 		<li><a class="sans-serif" href="/dashboard">Dashboard</a></li>
 		</ul>
 		</div>

@@ -90,22 +90,24 @@ body {
 #logo {
 	margin-bottom: 3rem;
 }
-#logo + ul li{
+#logo + ul > li{
 	border-bottom: 1px solid #ececec;
 	border-top: 1px solid #ececec;
+	text-align: left;
+	padding: 0 4rem 0 10rem;
 	
 }
-#logo + ul li:last-child{
+#logo + ul > li:last-child{
 	border-top: 0;
 }
-#logo + ul li a{
+#logo + ul > li a{
 	display: inline-block;
 	text-decoration: none;
 	margin-bottom: 0;
 	padding: 20px 0;
 }
 
-#logo + ul li a:hover {
+#logo + ul > li a:hover {
 	color: #bb427c;
 	cursor: pointer;
 }
@@ -116,7 +118,24 @@ body {
 	padding: 50px;
 	border-radius: 4px;
 }
-
+.options {
+	float: right;
+}
+.options li {
+	display: inline-block;
+	margin: 0 4rem;
+}
+.options li a {
+	background-color: #ECECEC;
+	border-radius: 6px;
+	padding: .5rem 1rem !important;
+	margin-top: 1.5rem;
+	color: #999;
+}
+.options li a.active,.options li a.active:hover {
+	background-color: #bb427c;
+	color: white !important;
+}
 /* @group  ICONS
 ----------------------------------------------- */
 
