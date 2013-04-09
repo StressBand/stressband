@@ -60,6 +60,7 @@ SB.mobile = (function($,_,createjs,d3){
 	manageAnimations = function(anim,param){
 		switch (anim) {
 			case 'undulate':
+				// fix y movement
 				createjs.Tween.get(blowfish).to({y:blowfish.y+param.to},1000,createjs.Ease.sineInOut).call(function(){ 
 					manageAnimations('undulate',{to:(Math.sin(createjs.Ticker.getTime())*20)});
 				});
@@ -67,6 +68,11 @@ SB.mobile = (function($,_,createjs,d3){
 			case 'roll':
 				createjs.Tween.get(blowfish).to({rotation:param.to},1000,createjs.Ease.linear).call(function(){
 					manageAnimations('roll',{to: (param.to*-1)});
+				});
+				break;
+			case 'updateY':
+				createjs.Tween.get(blowfish).to({y:blowfish.y+50},1000,createjs.Ease.sineInOut).call(function(){ 
+					manageAnimations('undulate',{to:(Math.sin(createjs.Ticker.getTime())*20)});
 				});
 				break;
 			case 'finale':
