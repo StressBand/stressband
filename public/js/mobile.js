@@ -20,7 +20,7 @@ SB.mobile = (function($,_,createjs,d3){
 		},	
 		stage,breaths = [],breathing,fps = 30,blowfish,
 		// function list
-		init,setupScreen,updateStage,inflateBlowfish,logBreaths,graph;
+		init,setupScreen,manageAnimations, updateStage,inflateBlowfish,logBreaths,graph;
 	
 	/*  setupScreen - Initialize the Elements of the Mini-Game
 		----------------------------------------------- */
@@ -29,28 +29,50 @@ SB.mobile = (function($,_,createjs,d3){
 		createjs.Ticker.useRAF = true;
 		createjs.Ticker.setFPS(fps);
 		
-		// start spritsheet data
+		// get spritesheet data
 		$.getJSON('images/mobile/blowfishAnim_003.json',function(data){
 			blowfish = new createjs.BitmapAnimation(new createjs.SpriteSheet(data));
 			blowfish.gotoAndPlay('s1_idle');
 			blowfish.state = 1;
-			viewState = 1;
 			blowfish.x = Math.floor(jQMap.$screen.width()/2) - 184;
-			blowfish.y = 10;
+			blowfish.y = 30;
 			stage.addChild(blowfish);
 			
 			// start the game loop
 			createjs.Ticker.addEventListener('tick',updateStage)
 			// inflate the fish!
 			inflateBlowfish(4);
+			manageAnimations('undulate',{to:Math.sin(createjs.Ticker.getTime())*20}); // move up and down
+			manageAnimations('roll',{to:1}); // rotate a little
 		});
 	};
 	
 	/*  updateStage - Main Mobile Game Loop
 	----------------------------------------------- */
 	updateStage = function(){
-		// do some undulating animation on the Y axis here
 		stage.update();
+	};
+	
+	/*  manageAnimations - Deal With the Blowfish's Animations
+		args:	anim		- animation to start
+				param{}		- animation parameters
+	----------------------------------------------- */
+	manageAnimations = function(anim,param){
+		switch (anim) {
+			case 'undulate':
+				createjs.Tween.get(blowfish).to({y:blowfish.y+param.to},1000,createjs.Ease.sineInOut).call(function(){ 
+					manageAnimations('undulate',{to:(Math.sin(createjs.Ticker.getTime())*20)});
+				});
+				break;
+			case 'roll':
+				createjs.Tween.get(blowfish).to({rotation:param.to},1000,createjs.Ease.linear).call(function(){
+					manageAnimations('roll',{to: (param.to*-1)});
+				});
+				break;
+			case 'finale':
+				break;
+		}
+		
 	};
 	
 	/*  updateStage - Change the blowfish's state
@@ -132,24 +154,9 @@ SB.mobile = (function($,_,createjs,d3){
 		});
 		$('#cancel').on('click',function(e){ window.close() });
 	
-	
-	
 		// are we in debug mode?
 		if(window.location.search.indexOf('debug') !== -1){
-			drawChart();
-			$('#controls').css('display','block');
-			
-			$('#next').on('click',function(){
-				if(blowfish.state != 4){
-					inflateBlowfish(blowfish.state+1)
-				}
-			});
-			$('#prev').on('click',function(){
-				if(blowfish.state != 1){
-					inflateBlowfish(blowfish.state-1)
-				}
-			});
-			
+			drawChart();	
 		}		
 	};
 	
