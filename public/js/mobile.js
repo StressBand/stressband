@@ -105,6 +105,7 @@ SB.mobile = (function($,_,createjs,d3){
 		args:	reading		- data point's differential from stretch sensor
 		----------------------------------------------- */
 	logBreaths = function(reading){
+		// change these to alter sensitivity
 		var peak = .85, valley = .1;
 		if(reading > peak) { breathing = true; console.log('breath'); }
 		if(reading < valley && breathing){
