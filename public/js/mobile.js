@@ -218,7 +218,8 @@ SB.mobile = (function($,_,createjs,d3){
 	//-------------------------------- END CHARTING FUNCTIONS ( FOR DEBUG ONLY )
 	
 	return {
-		init:init
+		init:init,
+		inflate:inflateBlowfish
 	};
 	
 })(jQuery,_,createjs,d3);
