@@ -81,6 +81,7 @@ SB.mobile = (function($,_,createjs,d3){
 				fishBaseY = blowfish.y + param.delta; // all you have to do is change the base!
 				break;
 			case 'finale':
+				$('#breaths').fadeOut(500);
 				createjs.Tween.get(blowfish,{override:true}).to({y:blowfish.y-40},1500,createjs.Ease.bounceIn).call(function(){
 					createjs.Tween.get(blowfish,{override:true}).to({y:$(window).height()},4000,createjs.Ease.backInOut).call(function(){
 						endGame();
@@ -189,7 +190,7 @@ SB.mobile = (function($,_,createjs,d3){
 				$endCard.remove();
 				// reset the game
 				blowfish.y = fishBaseY = 30;
-				$('#breaths li').removeClass('lit');
+				$('#breaths').fadeIn().children('li').removeClass('lit');
 				breaths = [];
 				inflateBlowfish(4);
 
