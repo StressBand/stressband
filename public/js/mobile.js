@@ -16,12 +16,12 @@ SB.mobile = (function($,_,createjs,d3){
 	var
 		jQMap = {	// keep track of common jQuery objects to save lookup time
 			$container	:"",
-			$screen		:""	
-		},	
+			$screen		:""
+		},
 		stage,breaths = [],breathing,fps = 30,blowfish,
 		// function list
 		init,setupScreen,manageAnimations, updateStage,inflateBlowfish,logBreaths,graph;
-	
+
 	/*  setupScreen - Initialize the Elements of the Mini-Game
 		----------------------------------------------- */
 	setupScreen = function(canvas){
@@ -62,7 +62,6 @@ SB.mobile = (function($,_,createjs,d3){
 			case 'undulate':
 				// fix y movement
 				createjs.Tween.get(blowfish).to({y:blowfish.y+param.to},1000,createjs.Ease.sineInOut).call(function(){ 
-					manageAnimations('undulate',{to:(Math.sin(createjs.Ticker.getTime())*20)});
 				});
 				break;
 			case 'roll':
@@ -71,7 +70,7 @@ SB.mobile = (function($,_,createjs,d3){
 				});
 				break;
 			case 'updateY':
-				createjs.Tween.get(blowfish).to({y:blowfish.y+50},1000,createjs.Ease.sineInOut).call(function(){ 
+				createjs.Tween.get(blowfish).to({y:blowfish.y+50},1000,createjs.Ease.sineInOut).call(function(){
 					manageAnimations('undulate',{to:(Math.sin(createjs.Ticker.getTime())*20)});
 				});
 				break;
@@ -96,7 +95,7 @@ SB.mobile = (function($,_,createjs,d3){
 					blowfish.gotoAndPlay('s'+blowfish.state+'_trans');
 					blowfish.state+=1;
 				}
-				
+
 				var idle = blowfish.addEventListener('animationend', function(event) {
 					blowfish.gotoAndPlay('s'+blowfish.state+"_idle");
 					blowfish.removeEventListener('animationend', idle);

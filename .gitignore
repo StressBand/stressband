@@ -1,13 +1,3 @@
-########################
-# sails
-########################
-.sails
-.waterline
-.rigging
-.tmp
-
-
-########################
 # node.js / npm
 ########################
 node_modules
@@ -37,6 +27,8 @@ npm-debug.log
 nbproject
 .idea
 *.esproj
+*.sublime-project
+*.sublime-workspace
 
 ########################
 # local config
