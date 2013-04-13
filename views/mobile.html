@@ -35,15 +35,15 @@
 						<p> It looks like you could use a <span>relaxation</span> exercise.</p>
 						<ul class="opts">
 							<li class="btn next">Let's Do It!</li>
-							<li id="cancel" class="btn neg">Not Now.</li>
+							<li class="btn neg cancel">Not Now.</li>
 						</ul>
 					</li>
 					<li class="card severe">
 						<span class="icon-lightbulb"></span>
 						<p> How <span class="neg">stressed</span> do you feel?</p>
 						<ul class="opts">
-							<li class="btn neg">Very Stressed!</li>
-							<li class="btn mid">Somewhat Stressed.</li>
+							<li class="btn neg next">Very Stressed!</li>
+							<li class="btn mid next">Somewhat Stressed.</li>
 							<li class="btn next">Near Normal.</li>
 						</ul>
 					</li>
@@ -101,6 +101,18 @@
 			<section class="below">
 				<canvas id="screen" width="500px" height="500px"></canvas>
 			</section>
+		</div>
+
+		<!-- HIDDEN ELEMENT -->
+		<div id="endCard" class="hidden" style="display:none">
+			<li class = "card end">
+				<span class="icon-lightbulb"></span>
+				<p> Great Job! </p><p class="details">how are you feeling now? </p>
+				<ul class="opts">
+					<li class="btn cancel">Much Better!</li>
+					<li class="btn mid restart">Let's Do That Agian.</li>
+				</ul>
+			</li>
 		</div>
 	</body>
 </html>
