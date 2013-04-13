@@ -193,7 +193,6 @@ SB.mobile = (function($,_,createjs,d3){
 				$('#breaths').fadeIn().children('li').removeClass('lit');
 				breaths = [];
 				inflateBlowfish(4);
-
 			});
 			return false;
 		});
