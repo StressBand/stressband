@@ -139,6 +139,10 @@ SB.mobile = (function($,_,createjs,d3){
 					$('#breaths li').removeClass('lit');
 				} else {
 					console.log('game over!');
+					// If in debug mode, don't end the game -- keep testing.
+					if (window.location.search.indexOf('debug') == -1) {
+						manageAnimations('finale');
+					}
 				}
 			}
 		}
