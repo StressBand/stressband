@@ -100,6 +100,19 @@ SB.mobile = (function($,_,createjs,d3){
 			}
 		}
 	}
+
+	var lastReading = 100;
+	var updateY = function(reading) {
+		// Hmmmm.
+
+		if (reading > lastReading) {
+			blowfish.y += 5;
+		} else {
+			blowfish.y -= 5;
+		}
+
+		lastReading = reading;
+	};
 	
 	/* PUBLIC init - Module Initialization
 		args:	container 	- the main html element of the view, ID ref
@@ -125,6 +138,12 @@ SB.mobile = (function($,_,createjs,d3){
 					logBreaths(sensor.diff);
 					updateChart(sensor.diff);
 				});
+
+				socket.on('pulse', function(sensor) {
+					console.log('Pulse: ', sensor.output);
+					updateY(sensor.output);
+				});
+
 			} else { // cycle to next prompt
 				$('#cards').animate({'left':'-='+$(window).width()+'px'});
 			}
