@@ -33,9 +33,10 @@ var initMonitoring = function(){
 		ppath,serial, connect;
 		
 	serialport.list(function(err,ports){
-		ports.forEach(function(port){
-			if(port.manufacturer === 'FTDI') ppath = port.comName;
-		});
+		// ports.forEach(function(port){
+		// 	if(port.manufacturer === 'FTDI') ppath = port.comName;
+		// });
+		ppath = '/dev/tty.usbmodemfd131';
 		connect();
 	});
 
