@@ -34,27 +34,46 @@ var initMonitoring = function(){
 		
 	serialport.list(function(err,ports){
 		ports.forEach(function(port){
-			if(port.manufacturer === 'FTDI') ppath = port.comName;
+			if (port.manufacturer === 'FTDI') {
+				ppath = port.comName;
+			} else if (port.manufacturer.search(/Arduino/) !== -1) {
+				ppath = port.comName.replace(/cu/, 'tty');
+			}
 		});
+
+		console.log("Located Arduino: ", ppath);
 		connect();
 	});
 
-	
 	connect = function(){
 		serial = new serialport.SerialPort(ppath, {
-		    baudrate: 9600,
-		    parser: serialport.parsers.readline("\n") 
-		  });
-		serial.on('open',function(){
+			baudrate: 115200,
+			parser: serialport.parsers.readline("\n")
+		});
+
+		serial.on('open',function() {
 			console.log('Connected to serial port '+ppath+'.');
-			serial.on('data',function(data){
-				var val = parseInt(data);
-				var avg = mavg(val);
-				if(avg){
-					var d = (1 - val / avg) * 100;
-					sio.sockets.emit('sensor',{output:val,average:avg,diff:d});
+			serial.on('data',function(data) {
+				// Sometimes if the transmission was interrupted strange things happen.
+				if (data) {
+					var dataType = data[0];
+					var val = parseInt(data.slice(1));
+
+					if (dataType == 'B') {
+						// Pulse data.
+						sio.sockets.emit('pulse', {output: val});
+						console.log({output:val});
+					} else if (dataType == 'W') {
+						// Breath data.
+						var avg = mavg(val);
+						if (avg) {
+							var d = (1 - val / avg) * 100;
+							sio.sockets.emit('sensor',{output:val,average:avg,diff:d});
+						}
+						// console.log({output:val,average:avg,diff:d});
+					}
+					// Else, we don't care -- either Q or S.
 				}
-				console.log({output:val,average:avg,diff:d});
 			});
 			
 		}); 

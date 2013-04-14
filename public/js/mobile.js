@@ -78,7 +78,11 @@ SB.mobile = (function($,_,createjs,d3){
 				});
 				break;
 			case 'updateY':
-				fishBaseY = blowfish.y + param.delta; // all you have to do is change the base!
+				if ('delta' in param) {
+					fishBaseY = blowfish.y + param.delta; // all you have to do is change the base!
+				} else if ('absolute' in param) {
+					fishBaseY = param.absolute;
+				}
 				break;
 			case 'finale':
 				$('#breaths').fadeOut(500);
@@ -136,11 +140,63 @@ SB.mobile = (function($,_,createjs,d3){
 					$('#breaths li').removeClass('lit');
 				} else {
 					console.log('game over!');
+					// If in debug mode, don't end the game -- keep testing.
+					if (window.location.search.indexOf('debug') == -1) {
+						manageAnimations('finale');
+					}
 				}
 			}
 		}
 	};
 
+	var updateY = (function() {
+		// var pulseFloor = 50;
+		// var pulseCeil = 100;
+
+		var debug_fakery = 10;
+		var debug_range = d3.scale.linear()
+			.domain([0, 10])
+			.range([50, 100]);
+
+		var blowfish_range = d3.scale.linear()
+			.clamp(true)
+			.domain([50, 100])
+			.range([325, 25]);
+
+		var pulse_mavg = (function(){
+			var buffer = [];
+			var blen = 5;
+			return function(val) {
+				if (buffer.length === blen) {
+					buffer.shift();
+				}
+
+				buffer.push(val);
+				
+				var sum = 0;
+				if (buffer.length === blen){
+					// Get rid of outliers.  Sometimes the sensor just goes nuts.
+					return d3.median(buffer);
+				} else {
+					// Assume high pulse if we don't have enough data yet.
+					return 100;
+				}
+			};
+		})();
+
+		// return function(reading) {};
+
+		// return function(reading) {
+		// 	debug_fakery -= 1;
+		// 	manageAnimations('updateY', {absolute: blowfish_range(debug_range(debug_fakery))});
+		// };
+
+		return function(reading) {
+			manageAnimations('updateY', {absolute: blowfish_range(pulse_mavg(reading))});
+		};
+
+	})();
+	
 	/* PUBLIC init - Module Initialization
 		args:	container		- the main html element of the view, ID ref
 					canvas			- the canvas element for holding the mini-game, ID ref
@@ -165,6 +221,12 @@ SB.mobile = (function($,_,createjs,d3){
 					logBreaths(sensor.diff);
 					updateChart(sensor.diff);
 				});
+
+				socket.on('pulse', function(sensor) {
+					console.log('Pulse: ', sensor.output);
+					updateY(sensor.output);
+				});
+
 			} else { // cycle to next prompt
 				$('#cards').animate({'left':'-='+$(window).width()+'px'});
 			}
