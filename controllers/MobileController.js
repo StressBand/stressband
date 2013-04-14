@@ -33,10 +33,15 @@ var initMonitoring = function(){
 		ppath,serial, connect;
 		
 	serialport.list(function(err,ports){
-		// ports.forEach(function(port){
-		// 	if(port.manufacturer === 'FTDI') ppath = port.comName;
-		// });
-		ppath = '/dev/tty.usbmodemfd131';
+		ports.forEach(function(port){
+			if (port.manufacturer === 'FTDI') {
+				ppath = port.comName;
+			} else if (port.manufacturer.search(/Arduino/) !== -1) {
+				ppath = port.comName.replace(/cu/, 'tty');
+			}
+		});
+
+		console.log("Located Arduino: ", ppath);
 		connect();
 	});
 
@@ -57,6 +62,7 @@ var initMonitoring = function(){
 					if (dataType == 'B') {
 						// Pulse data.
 						sio.sockets.emit('pulse', {output: val});
+						console.log({output:val});
 					} else if (dataType == 'W') {
 						// Breath data.
 						var avg = mavg(val);
@@ -64,7 +70,7 @@ var initMonitoring = function(){
 							var d = (1 - val / avg) * 100;
 							sio.sockets.emit('sensor',{output:val,average:avg,diff:d});
 						}
-						console.log({output:val,average:avg,diff:d});
+						// console.log({output:val,average:avg,diff:d});
 					}
 					// Else, we don't care -- either Q or S.
 				}
