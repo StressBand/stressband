@@ -65,9 +65,14 @@ var initMonitoring = function(){
 						console.log({output:val});
 					} else if (dataType == 'W') {
 						// Breath data.
+
+						if (val < 600) {
+							return;
+						}
+
 						var avg = mavg(val);
 						if (avg) {
-							var d = (1 - val / avg) * 100;
+							var d = (1 - val / avg) * 200;
 							sio.sockets.emit('sensor',{output:val,average:avg,diff:d});
 						}
 						// console.log({output:val,average:avg,diff:d});
