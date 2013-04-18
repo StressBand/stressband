@@ -13,7 +13,7 @@ var serialport = require('serialPort');
 
 var mavg = (function(){
 	var buffer = [];
-	var blen = 65;
+	var blen = 100;
 	return function(val){
 		if(buffer.length === blen) buffer.shift();
 		buffer.push(val);
@@ -47,7 +47,7 @@ var initMonitoring = function(){
 
 	connect = function(){
 		serial = new serialport.SerialPort(ppath, {
-			baudrate: 115200,
+			baudrate: 9600,
 			parser: serialport.parsers.readline("\n")
 		});
 
@@ -56,23 +56,13 @@ var initMonitoring = function(){
 			serial.on('data',function(data) {
 				// Sometimes if the transmission was interrupted strange things happen.
 				if (data) {
-					var dataType = data[0];
-					var val = parseInt(data.slice(1));
-
-					if (dataType == 'B') {
-						// Pulse data.
-						sio.sockets.emit('pulse', {output: val});
-						console.log({output:val});
-					} else if (dataType == 'W') {
-						// Breath data.
-						var avg = mavg(val);
-						if (avg) {
-							var d = (1 - val / avg) * 100;
-							sio.sockets.emit('sensor',{output:val,average:avg,diff:d});
-						}
-						// console.log({output:val,average:avg,diff:d});
+					var val = parseInt(data);
+					var avg = mavg(val);
+					if (avg) {
+						var d = (1 - val / avg) * 200;
+						sio.sockets.emit('sensor',{output:val,average:avg,diff:d});
 					}
-					// Else, we don't care -- either Q or S.
+					console.log({output:val,average:avg,diff:d});
 				}
 			});
 			
